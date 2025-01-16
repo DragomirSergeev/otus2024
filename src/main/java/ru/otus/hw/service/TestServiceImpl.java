@@ -2,7 +2,9 @@ package ru.otus.hw.service;
 
 import lombok.RequiredArgsConstructor;
 import ru.otus.hw.dao.QuestionDao;
+import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
+import ru.otus.hw.exceptions.QuestionReadException;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,13 +22,21 @@ public class TestServiceImpl implements TestService {
     public void executeTest() {
         ioService.printLine("");
         ioService.printFormattedLine("Please answer the questions below%n");
-        // Получить вопросы из дао и вывести их с вариантами ответов
-        List<Question> questions = questionDao.findAll();
+        List<Question> questions = null;
+        do {
+            try {
+                questions = questionDao.findAll();
+            } catch (QuestionReadException ex) {
+                ioService.printLine(ex.getMessage());
+            }
+        } while (questions == null);
 
         for (Question question : questions) {
             ioService.printLine("Question: " + question.text());
-            AtomicInteger questionCounter = new AtomicInteger(1);
-            question.answers().forEach(a -> ioService.printLine("Answer " + questionCounter.getAndIncrement() + ": " + a.text()));
+            List<Answer> answers = question.answers();
+            for (int i=0; i < answers.size(); i++ ) {
+                ioService.printLine("Answer " + i + ": " + answers.get(i).text());
+            }
             ioService.printLine(QUESTION_SEPARATOR);
         }
     }

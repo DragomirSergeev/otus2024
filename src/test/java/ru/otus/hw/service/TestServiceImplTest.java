@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import ru.otus.hw.dao.QuestionDao;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
@@ -22,11 +21,10 @@ class TestServiceImplTest {
     @Mock
     private QuestionDao questionDao;
 
-    @Spy
     @InjectMocks
     private TestServiceImpl testService;
 
-    List<Question> testQuestions;
+    private List<Question> testQuestions;
 
     @BeforeEach
     public void setup() {
