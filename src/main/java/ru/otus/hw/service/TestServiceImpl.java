@@ -1,0 +1,40 @@
+package ru.otus.hw.service;
+
+import lombok.RequiredArgsConstructor;
+import ru.otus.hw.dao.QuestionDao;
+import ru.otus.hw.domain.Answer;
+import ru.otus.hw.domain.Question;
+import ru.otus.hw.exceptions.QuestionReadException;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+@RequiredArgsConstructor
+public class TestServiceImpl implements TestService {
+
+    private static final String QUESTION_SEPARATOR = "__________________________";
+
+    private final IOService ioService;
+
+    private final QuestionDao questionDao;
+
+    @Override
+    public void executeTest() {
+        ioService.printLine("");
+        ioService.printFormattedLine("Please answer the questions below%n");
+        List<Question> questions = questionDao.findAll();
+
+        for (Question question : questions) {
+            printQuestionAndAnswers(question);
+        }
+    }
+
+    private void printQuestionAndAnswers(Question question) {
+        ioService.printLine("Question: " + question.text());
+        List<Answer> answers = question.answers();
+        for (int i=0; i < answers.size(); i++ ) {
+            ioService.printLine("Answer " + i + ": " + answers.get(i).text());
+        }
+        ioService.printLine(QUESTION_SEPARATOR);
+    }
+}
