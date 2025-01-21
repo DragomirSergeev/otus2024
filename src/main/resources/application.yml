@@ -1,4 +1,7 @@
 spring:
+  shell:
+    interactive:
+      enabled: true
   messages:
     baseName: messages
     encoding: UTF-8

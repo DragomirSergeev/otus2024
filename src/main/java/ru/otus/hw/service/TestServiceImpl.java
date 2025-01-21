@@ -1,6 +1,7 @@
 package ru.otus.hw.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.hw.dao.QuestionDao;
@@ -14,16 +15,18 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
-@RequiredArgsConstructor
 public class TestServiceImpl implements TestService {
 
     private static final String QUESTION_SEPARATOR = "__________________________";
 
-    private final LocalizedIOService ioService;
+    @Autowired
+    private LocalizedIOService ioService;
 
-    private final QuestionDao questionDao;
+    @Autowired
+    private QuestionDao questionDao;
 
-    private final LocalizedMessagesService messagesService;
+    @Autowired
+    private LocalizedMessagesService messagesService;
 
     @Override
     public TestResult executeTestFor(Student student) {
