@@ -22,22 +22,19 @@ public class TestServiceImpl implements TestService {
     public void executeTest() {
         ioService.printLine("");
         ioService.printFormattedLine("Please answer the questions below%n");
-        List<Question> questions = null;
-        do {
-            try {
-                questions = questionDao.findAll();
-            } catch (QuestionReadException ex) {
-                ioService.printLine(ex.getMessage());
-            }
-        } while (questions == null);
+        List<Question> questions = questionDao.findAll();
 
         for (Question question : questions) {
-            ioService.printLine("Question: " + question.text());
-            List<Answer> answers = question.answers();
-            for (int i=0; i < answers.size(); i++ ) {
-                ioService.printLine("Answer " + i + ": " + answers.get(i).text());
-            }
-            ioService.printLine(QUESTION_SEPARATOR);
+            printQuestionAndAnswers(question);
         }
+    }
+
+    private void printQuestionAndAnswers(Question question) {
+        ioService.printLine("Question: " + question.text());
+        List<Answer> answers = question.answers();
+        for (int i=0; i < answers.size(); i++ ) {
+            ioService.printLine("Answer " + i + ": " + answers.get(i).text());
+        }
+        ioService.printLine(QUESTION_SEPARATOR);
     }
 }
